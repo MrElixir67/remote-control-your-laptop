@@ -42,6 +42,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Unauthorized")
         return
     
+    # Force clear old keyboard first
+    from telegram import ReplyKeyboardRemove
+    await update.message.reply_text("Refreshing keyboard...", reply_markup=ReplyKeyboardRemove())
+    
     keyboard = [
         [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
         [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
