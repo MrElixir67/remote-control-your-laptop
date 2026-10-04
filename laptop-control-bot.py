@@ -103,19 +103,49 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Status check
     elif text == "📊 Status":
+        # Uptime
         uptime_success, uptime = run_command(["uptime", "-p"])
-        load_success, load = run_command(["cat", "/proc/loadavg"])
-        mem_success, mem = run_command(["free", "-h"])
         
-        status_text = "📊 *Laptop Status*\n\n"
+        # CPU Load (1, 5, 15 min averages)
+        load_success, load = run_command(["cat", "/proc/loadavg"])
+        
+        # RAM usage
+        mem_success, mem = run_command(["free", "-h", "--si"])
+        
+        # GPU usage (NVIDIA)
+        gpu_success, gpu = run_command([
+            "nvidia-smi", 
+            "--query-gpu=utilization.gpu,memory.used,memory.total,temperature.gpu",
+            "--format=csv,noheader,nounits"
+        ])
+        
+        status_text = "📊 *System Status*\n\n"
+        
         if uptime_success:
-            status_text += f"⏱️ Uptime: {uptime.strip()}\n"
+            status_text += f"*Uptime:* {uptime.strip().replace('up ', '')}\n\n"
+        
         if load_success:
-            load_avg = load.split()[:3]
-            status_text += f"📈 Load: {' '.join(load_avg)}\n"
+            loads = load.split()[:3]
+            status_text += f"*CPU Load:* {loads[0]} / {loads[1]} / {loads[2]}\n"
+            status_text += f"_(1min / 5min / 15min)_\n\n"
+        
         if mem_success:
-            mem_lines = mem.split('\n')[1]
-            status_text += f"💾 Memory:\n`{mem_lines}`"
+            mem_line = mem.split('\n')[1].split()
+            total = mem_line[1]
+            used = mem_line[2]
+            status_text += f"*RAM:* {used} / {total}\n\n"
+        
+        if gpu_success and gpu.strip():
+            gpu_data = gpu.strip().split(',')
+            gpu_util = gpu_data[0].strip()
+            gpu_mem_used = gpu_data[1].strip()
+            gpu_mem_total = gpu_data[2].strip()
+            gpu_temp = gpu_data[3].strip()
+            status_text += f"*GPU:* {gpu_util}% usage\n"
+            status_text += f"*VRAM:* {gpu_mem_used} / {gpu_mem_total} MB\n"
+            status_text += f"*Temp:* {gpu_temp}°C"
+        else:
+            status_text += "*GPU:* Not available"
         
         await update.message.reply_text(status_text, parse_mode="Markdown")
     
