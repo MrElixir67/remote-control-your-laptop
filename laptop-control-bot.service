@@ -1,0 +1,13 @@
+[Unit]
+Description=Laptop Control Bot - Telegram remote control
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.hermes/.env
+ExecStart=/usr/bin/python3 %h/.hermes/laptop-control-bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
