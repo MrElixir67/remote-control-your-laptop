@@ -1,4 +1,4 @@
-# Remote Control Your Laptop
+# Remote Control Your Pc
 
 Control your Linux laptop remotely through a Telegram bot. Lock, unlock, reboot, shutdown, and monitor system status from your phone.
 
