@@ -55,7 +55,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Send new keyboard
     keyboard = [
-        [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
+        [KeyboardButton("🔒 Lock"), KeyboardButton("🔓 Unlock")],
         [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
@@ -76,7 +76,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     
     # Lock screen
-    if text == "🔒 Lock Screen":
+    if text == "🔒 Lock" or text == "🔒 Lock Screen":
         success, output = run_command(["loginctl", "lock-session"])
         if success:
             await update.message.reply_text("🔒 Screen locked!")
@@ -140,7 +140,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "✅ Confirm Reboot":
         # Restore main keyboard
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
+            [KeyboardButton("🔒 Lock"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
@@ -150,7 +150,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Confirm shutdown
     elif text == "✅ Confirm Shutdown":
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
+            [KeyboardButton("🔒 Lock"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
@@ -161,7 +161,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "❌ Cancel":
         context.user_data.pop('pending_action', None)
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
+            [KeyboardButton("🔒 Lock"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
