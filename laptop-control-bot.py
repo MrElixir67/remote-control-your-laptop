@@ -128,8 +128,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "✅ Confirm Reboot":
         # Restore main keyboard
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Wake Screen")],
-            [KeyboardButton("📊 Status")],
+            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
@@ -139,7 +138,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Confirm shutdown
     elif text == "✅ Confirm Shutdown":
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("📊 Status")],
+            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
@@ -150,7 +149,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "❌ Cancel":
         context.user_data.pop('pending_action', None)
         keyboard = [
-            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("📊 Status")],
+            [KeyboardButton("🔒 Lock Screen"), KeyboardButton("🔓 Unlock")],
             [KeyboardButton("🔄 Reboot"), KeyboardButton("⚡ Shutdown")]
         ]
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)
